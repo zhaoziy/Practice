@@ -8,37 +8,37 @@
 
 using namespace std;
 
-int TenToEight(int number)
+long long TenConvert(int number, int jinzhi)
 {
-	int eightNum = 0;
-	stack<int> eight;
+	long long endNum = 0;
+	stack<int> endjinzhi;
 	while (number)
 	{
 		int mod = 0;
-		mod = number % 8;
-		eight.push(mod);
-		number = (number-mod) / 8;
+		mod = number % jinzhi;
+		endjinzhi.push(mod);
+		number = (number-mod) / jinzhi;
 	}
 	while (1)
 	{
-		eightNum += eight.top();
-		eight.pop();
-		if (!eight.empty())
+		endNum += endjinzhi.top();
+		endjinzhi.pop();
+		if (!endjinzhi.empty())
 		{
-			eightNum *= 10;
+			endNum *= 10;
 		}
 		else
 		{
 			break;
 		}
 	}
-	return eightNum;
+	return endNum;
 }
 
 int main()
 {
-	int a = 0;
-	a = TenToEight(1348);
+	long long a = 0;
+	a = TenConvert(3, 2);
     return 0;
 }
 
