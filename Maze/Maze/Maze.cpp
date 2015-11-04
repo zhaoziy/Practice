@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <stack>
 
 using namespace std;
 
@@ -18,13 +19,14 @@ typedef struct MazeNode
 {
 	int ord;
 	int flag;  // 1墙，0通道
-	Pos seat;
+	Pos me;
+	Pos top;
 	int direct;
 };
 
-MazeNode Maze[100];
+stack<MazeNode> path;
 
-int ReadInfo()
+int ReadInfo(MazeNode *Maze)
 {
 	ifstream ifile("d:\\Maze.txt");
 	if (!ifile) 
@@ -47,8 +49,10 @@ int ReadInfo()
 			Maze[iLoop].ord = iLoop + 1;
 			Maze[iLoop].flag = *p - '0';
 			*p++;
-			Maze[iLoop].seat.x = col + 1;
-			Maze[iLoop].seat.y = row + 1;
+			Maze[iLoop].me.x = col + 1;
+			Maze[iLoop].me.y = row + 1;
+			Maze[iLoop].top.x = 0;
+			Maze[iLoop].top.y = 0;
 			Maze[iLoop].direct = 1;   //1右，2下，3左，4上
 			col++;
 			iLoop++;
@@ -58,9 +62,43 @@ int ReadInfo()
 	}
 }
 
+int Print(MazeNode *Maze)
+{
+	int count = 0;
+	for (count = 0; count < 100; ++count)
+	{
+		if (Maze[count].flag == 1)
+		{
+			cout << '*';
+			if ((count + 1) % 10 == 0)
+			{
+				cout << endl;
+			}
+		}
+		else
+		{
+			cout << ' ';
+			if ((count + 1) % 10 == 0)
+			{
+				cout << endl;
+			}
+		}
+	}
+	return 0;
+}
+
+int MakePath(MazeNode *Maze)
+{
+	return 0;
+}
+
 int main()
 {
-	ReadInfo();
+	MazeNode Maze[100];
+	
+	ReadInfo(Maze);
+	MakePath(Maze);
+	Print(Maze);
     return 0;
 }
 
