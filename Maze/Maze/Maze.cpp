@@ -101,4 +101,3 @@ int main()
 	Print(Maze);
     return 0;
 }
-
