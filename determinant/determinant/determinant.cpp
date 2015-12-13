@@ -65,7 +65,7 @@ int main()
 		}
 	}
 
-	/*degree = 5;
+	degree = 5;
 	determinant[0][0] = 5;
 	determinant[0][1] = 8;
 	determinant[0][2] = 5;
@@ -90,7 +90,7 @@ int main()
 	determinant[4][1] = 6;
 	determinant[4][2] = 8;
 	determinant[4][3] = 7;
-	determinant[4][4] = 6;*/
+	determinant[4][4] = 6;
 	//²âÊÔÊı¾İ
 
 	result = CalcDeterminant(determinant, degree);
