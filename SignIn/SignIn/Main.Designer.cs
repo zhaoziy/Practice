@@ -29,6 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
 			this.TextBNum = new System.Windows.Forms.TextBox();
 			this.Label1 = new System.Windows.Forms.Label();
 			this.LabNum = new System.Windows.Forms.Label();
@@ -55,11 +56,11 @@
 			this.退出程序ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-			this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+			this.button_HIDE = new System.Windows.Forms.Button();
 			this.contextMenuStrip1.SuspendLayout();
-			this.statusStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -168,7 +169,7 @@
 			// 
 			// ButChange
 			// 
-			this.ButChange.Location = new System.Drawing.Point(71, 295);
+			this.ButChange.Location = new System.Drawing.Point(39, 293);
 			this.ButChange.Name = "ButChange";
 			this.ButChange.Size = new System.Drawing.Size(68, 28);
 			this.ButChange.TabIndex = 24;
@@ -232,6 +233,11 @@
 			// 
 			// notifyIcon1
 			// 
+			this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+			this.notifyIcon1.BalloonTipText = "123";
+			this.notifyIcon1.BalloonTipTitle = "456";
+			this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
+			this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
 			this.notifyIcon1.Visible = true;
 			this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
 			this.notifyIcon1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseMove);
@@ -251,14 +257,14 @@
 			// 详细信息ToolStripMenuItem
 			// 
 			this.详细信息ToolStripMenuItem.Name = "详细信息ToolStripMenuItem";
-			this.详细信息ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.详细信息ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
 			this.详细信息ToolStripMenuItem.Text = "详细信息";
 			this.详细信息ToolStripMenuItem.Click += new System.EventHandler(this.详细信息ToolStripMenuItem_Click);
 			// 
 			// 开机启动ToolStripMenuItem
 			// 
 			this.开机启动ToolStripMenuItem.Name = "开机启动ToolStripMenuItem";
-			this.开机启动ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.开机启动ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
 			this.开机启动ToolStripMenuItem.Text = "开机启动";
 			this.开机启动ToolStripMenuItem.Click += new System.EventHandler(this.开机启动ToolStripMenuItem_Click);
 			// 
@@ -283,29 +289,22 @@
 			// 退出程序ToolStripMenuItem
 			// 
 			this.退出程序ToolStripMenuItem.Name = "退出程序ToolStripMenuItem";
-			this.退出程序ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.退出程序ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
 			this.退出程序ToolStripMenuItem.Text = "退出程序";
 			this.退出程序ToolStripMenuItem.Click += new System.EventHandler(this.退出程序ToolStripMenuItem_Click);
 			// 
 			// statusStrip1
 			// 
-			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1,
-            this.toolStripStatusLabel2});
 			this.statusStrip1.Location = new System.Drawing.Point(0, 371);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Size = new System.Drawing.Size(232, 22);
 			this.statusStrip1.TabIndex = 34;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
-			// errorProvider1
-			// 
-			this.errorProvider1.ContainerControl = this;
-			// 
 			// toolStripStatusLabel1
 			// 
 			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-			this.toolStripStatusLabel1.Size = new System.Drawing.Size(86, 17);
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(161, 17);
 			this.toolStripStatusLabel1.Spring = true;
 			this.toolStripStatusLabel1.Text = "服务器时间：";
 			// 
@@ -315,11 +314,27 @@
 			this.toolStripStatusLabel2.Size = new System.Drawing.Size(56, 17);
 			this.toolStripStatusLabel2.Text = "00:00:00";
 			// 
+			// errorProvider1
+			// 
+			this.errorProvider1.ContainerControl = this;
+			// 
+			// button_HIDE
+			// 
+			this.button_HIDE.Location = new System.Drawing.Point(129, 293);
+			this.button_HIDE.Name = "button_HIDE";
+			this.button_HIDE.Size = new System.Drawing.Size(68, 28);
+			this.button_HIDE.TabIndex = 35;
+			this.button_HIDE.Text = "隐藏";
+			this.button_HIDE.UseVisualStyleBackColor = true;
+			this.button_HIDE.Click += new System.EventHandler(this.button_HIDE_Click);
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(232, 393);
+			this.ControlBox = false;
+			this.Controls.Add(this.button_HIDE);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.TextBNum);
 			this.Controls.Add(this.Label1);
@@ -337,14 +352,18 @@
 			this.Controls.Add(this.LabPhone);
 			this.Controls.Add(this.LabTeam);
 			this.Controls.Add(this.LabName);
+			this.KeyPreview = true;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "Main";
+			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "科中管理系统_签到";
+			this.TopMost = true;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
 			this.Shown += new System.EventHandler(this.Main_Shown);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Main_KeyDown);
 			this.contextMenuStrip1.ResumeLayout(false);
-			this.statusStrip1.ResumeLayout(false);
-			this.statusStrip1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -382,5 +401,6 @@
 		private System.Windows.Forms.ToolStripMenuItem 退出程序ToolStripMenuItem;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+		private System.Windows.Forms.Button button_HIDE;
 	}
 }

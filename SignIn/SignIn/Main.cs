@@ -11,6 +11,7 @@ namespace SignIn
 		static public string SoftName = "科中管理系统_签到";
 		static private string Semester = string.Empty;
 		static private DateTime SignInTime = DateTime.Now;
+		static private DateTime SignOutTime = DateTime.Now;
 		static private int NowWeek = 0;
 		static private bool IsFirstRun = true;
 		static private bool IsBackTip = true;
@@ -42,18 +43,6 @@ namespace SignIn
 			OnlineTime = SumOnlineTime();
 		}
 
-		private void UpdateInfo()
-		{
-			this.TextBName.Text = userinfo.UserName;
-			this.TextBNum.Text = userinfo.StuNum;
-			this.TextBTeam.Text = userinfo.Team;
-			this.TextBGrade.Text = userinfo.Grade;
-			this.TextBSign.Text = SignInTime.ToString("T");
-			this.TextBPhone.Text = userinfo.Phone;
-			this.TextBMotto.Text = userinfo.HappyMotto;
-			this.ButChange.Enabled = false;
-		}
-
 		private float SumOnlineTime()
 		{
 			float OnlineTime = -1;
@@ -81,7 +70,7 @@ namespace SignIn
 			{
 				MessageBox.Show("出现致命错误！程序将强制退出！");
 				IsSignIn = false;
-				Application.Exit();
+				Environment.Exit(0);
 			}
 
 			if (SignInTime.Year != 1991)
@@ -104,7 +93,7 @@ namespace SignIn
 				catch (Exception ex)
 				{
 					MessageBox.Show(ex.ToString());
-					Application.Exit();
+					Environment.Exit(0);
 				}
 			}
 		}
@@ -119,20 +108,22 @@ namespace SignIn
 			if (startupPath.Substring(0, 2) == @"\\")
 			{
 				MessageBox.Show("请不要在服务器上运行，请安装到本地后再运行。");
-				Application.Exit();
+				Environment.Exit(0);
 			}
 
 			//检测程序是否已经在运行
 			if (Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length > 1)
 			{
 				MessageBox.Show("检测到程序正在运行！");
-				Application.Exit();
+				Environment.Exit(0);
 			}
 
 			if (!GetInfo(out userinfo))
 			{
-				MessageBox.Show("出现未知错误，程序将退出！");
-				Application.Exit();
+				MessageBox.Show("未获取到用户信息，请先注册！");
+				Register newRegister = new Register();
+				newRegister.ShowDialog();
+				Environment.Exit(0);
 			}
 		}
 
@@ -195,20 +186,63 @@ namespace SignIn
 			}
 		}
 
-		struct UserInfo
+		#region "窗体事件"
+
+		private void Main_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			public string UserName;
-			public string StuNum;
-			public string user;
-			public string Team;
-			public string Phone;
-			public string HappyMotto;
-			public string Grade;
+			if (e.CloseReason == CloseReason.ApplicationExitCall)
+			{
+				if (IsSignIn)
+				{
+					SignOutTime = UserFunction.GetServerTime();
+					string str = "update 时间统计 set 离开='" + SignOutTime.ToString("T") +
+						"',合计时间='" + UserFunction.TimeDiff(SignOutTime, SignInTime) +
+						"' where ID=" + Sign_Identity;
+					DatabaseCmd database = new DatabaseCmd();
+					if (SignOutTime.Year == 1991 || !database.SqlExecuteNonQuery(str))
+					{
+						if (MessageBox.Show("无法正常签退，可能是网络连接故障。\n"
+							 + "点击 确定 将强行退出，此次签到记录作废。\n"
+							 + "点击 取消 将不会退出，可修复网络连接后再尝试退出。", SoftName,
+							 MessageBoxButtons.OKCancel ) != DialogResult.OK)
+						{
+							e.Cancel = true;
+						}
+					}
+				}
+			}
+			else if (e.CloseReason == CloseReason.UserClosing)
+			{
+				e.Cancel = true;
+				ShowOrHide(false);
+				if (IsFirstRun && IsBackTip)
+				{
+					notifyIcon1.Visible = true;
+					notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
+					notifyIcon1.BalloonTipTitle = userinfo.UserName;
+					notifyIcon1.BalloonTipText = "我在后台运行呢~~嘿嘿";
+					notifyIcon1.ShowBalloonTip(30);
+					IsBackTip = false;
+				}
+			}
+			else
+			{
+				if (IsSignIn)
+				{
+					SignOutTime = UserFunction.GetServerTime();
+					string str = "update 时间统计 set 离开='" + SignOutTime.ToString("T") +
+						"',合计时间='" + UserFunction.TimeDiff(SignOutTime, SignInTime) +
+						"' where ID=" + Sign_Identity;
+					DatabaseCmd database = new DatabaseCmd();
+					database.SqlExecuteNonQuery(str);
+				}
+			}
+			notifyIcon1.Visible = false;
 		}
 
 		private void Main_KeyDown(object sender, KeyEventArgs e)
 		{
-			if(e.KeyCode == Keys.Escape)
+			if (e.KeyCode == Keys.Escape)
 			{
 				ShowOrHide(false);
 			}
@@ -217,10 +251,10 @@ namespace SignIn
 		private void ShowOrHide(bool IsShow)
 		{
 			详细信息ToolStripMenuItem.Checked = IsShow;
-			if(IsShow)
+			if (IsShow)
 			{
 				NowTime = UserFunction.GetServerTime();
-				if(NowTime.Year == 1991)
+				if (NowTime.Year == 1991)
 				{
 					toolStripStatusLabel2.Text = "获取失败";
 				}
@@ -241,6 +275,10 @@ namespace SignIn
 			详细信息ToolStripMenuItem.Checked = false;
 		}
 
+		#endregion
+
+		#region "右下角事件"
+
 		private void notifyIcon1_DoubleClick(object sender, EventArgs e)
 		{
 			this.ShowOrHide(!this.Visible);
@@ -254,7 +292,7 @@ namespace SignIn
 		private void 开机启动ToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			this.开机启动ToolStripMenuItem.Checked = !this.开机启动ToolStripMenuItem.Checked;
-			if(开机启动ToolStripMenuItem.Checked)
+			if (开机启动ToolStripMenuItem.Checked)
 			{
 			}
 			else
@@ -272,31 +310,47 @@ namespace SignIn
 			notifyIcon1.Text = "当前在线时间为：" + OnlineTime + "小时";
 		}
 
+		#endregion
+
+		#region "个人信息控制及按钮事件"
+
 		private void TextBPhone_TextChanged(object sender, EventArgs e)
 		{
 			this.ButChange.Enabled = true;
 			this.ButChange.Text = "应用设置";
 		}
 
+		private void UpdateInfo()
+		{
+			this.TextBName.Text = userinfo.user;
+			this.TextBNum.Text = userinfo.StuNum;
+			this.TextBTeam.Text = userinfo.Team;
+			this.TextBGrade.Text = userinfo.Grade;
+			this.TextBSign.Text = SignInTime.ToString("T");
+			this.TextBPhone.Text = userinfo.Phone;
+			this.TextBMotto.Text = userinfo.HappyMotto;
+			this.ButChange.Enabled = false;
+		}
+
 		private void ButChange_Click(object sender, EventArgs e)
 		{
 			bool islegal = true;
-			for(int i = 0; i<TextBPhone.Text.Length; ++i )
+			for (int i = 0; i < TextBPhone.Text.Length; ++i)
 			{
-				if(!Char.IsNumber(TextBPhone.Text, i))
+				if (!Char.IsNumber(TextBPhone.Text, i))
 				{
 					islegal = false;
 				}
 			}
-			if(islegal)
+			if (islegal)
 			{
 				ButChange.Enabled = false;
 				ButChange.Text = "稍后....";
-				string str = @"update [member] set [电话]='" + TextBPhone.Text.Trim() + 
+				string str = @"update [member] set [电话]='" + TextBPhone.Text.Trim() +
 					"',[座右铭]='" + TextBMotto.Text.Trim() + "' where [学号]='" +
 					userinfo.StuNum + "'";
 				DatabaseCmd database = new DatabaseCmd();
-				if(!database.SqlExecuteNonQuery(str))
+				if (!database.SqlExecuteNonQuery(str))
 				{
 					MessageBox.Show("更新失败！请检查网络连接");
 					ButChange.Enabled = true;
@@ -318,9 +372,22 @@ namespace SignIn
 			}
 		}
 
-		private void Main_FormClosing(object sender, FormClosingEventArgs e)
+		private void button_HIDE_Click(object sender, EventArgs e)
 		{
+			ShowOrHide(false);
+		}
 
+		#endregion
+
+		struct UserInfo
+		{
+			public string UserName;
+			public string StuNum;
+			public string user;
+			public string Team;
+			public string Phone;
+			public string HappyMotto;
+			public string Grade;
 		}
 	}
 }

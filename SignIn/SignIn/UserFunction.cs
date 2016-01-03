@@ -1,18 +1,33 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Management;
 using System.Net;
-using System.Net.NetworkInformation;
-using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace SignIn
 {
 	static class UserFunction
 	{
+
+		static public string Md5(string strPwd)   //正确的MD5加密
+		{
+			MD5 md5 = new MD5CryptoServiceProvider();
+			byte[] bytes = System.Text.Encoding.UTF8.GetBytes(strPwd);
+			bytes = md5.ComputeHash(bytes);
+			md5.Clear();
+
+			string ret = "";
+			for (int i = 0; i < bytes.Length; i++)
+			{
+				ret += Convert.ToString(bytes[i], 16).PadLeft(2, '0').ToLower();
+			}
+
+			return ret.PadLeft(32, '0');
+		}
+
 		static public string GetSemester()
 		{
 			string Semester = string.Empty;
@@ -20,7 +35,7 @@ namespace SignIn
 			DatabaseCmd databasecmd = new DatabaseCmd();
 			SqlDataReader myreader;
 			databasecmd.SqlExecuteReader(str, out myreader);
-			if(myreader.Read())
+			if (myreader.Read())
 			{
 				Semester = myreader.GetString(0);
 			}
@@ -99,11 +114,7 @@ namespace SignIn
 			return tempip;
 		}
 
-		///<summary>
-		/// 通过NetworkInterface读取网卡Mac
-		///</summary>
-		///<returns></returns>
-		public static string GetMacByNetworkInterface()
+		static public string GetMacByNetworkInterface()
 		{
 			string mac = "";
 			ManagementClass mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
@@ -116,6 +127,20 @@ namespace SignIn
 				}
 			}
 			return mac;
+		}
+
+		static public double TimeDiff(DateTime time1, DateTime time2)
+		{
+			if(time1.Year == time2.Year && time1.Month == time2.Month && time1.Day == time2.Day)
+			{
+				TimeSpan ts = time1 - time2;
+				double dDays = ts.TotalHours;
+				return dDays;
+			}
+			else
+			{
+				return 0;
+			}
 		}
 	}
 }
