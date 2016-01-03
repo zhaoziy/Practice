@@ -131,11 +131,12 @@ namespace SignIn
 		{
 			string[] IPArrray = new string[4];
 			IPArrray = PublicIP.Split('.');
-			if (IPArrray[0] == "202" && IPArrray[1] == "118" && IPArrray[2] == "74")
+			if (IPArrray[0] == "202" && IPArrray[1] == "118" && IPArrray[2] == "74" && IPArrray[3] == "160")
 			{
 				return 1;
 			}
-			else if (IPArrray[0] == "202" && IPArrray[1] == "118" && IPArrray[2] == "111")
+			//else if (IPArrray[0] == "111" && IPArrray[1] == "117" && IPArrray[2] == "112" && IPArrray[3] == "118")
+			else if (IPArrray[0] == "202" && IPArrray[1] == "118" && IPArrray[2] == "111" && IPArrray[3] == "2")
 			{
 				return 2;
 			}
