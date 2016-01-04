@@ -2,7 +2,7 @@
 using System.Data.SqlClient;
 using System.Windows.Forms;
 
-namespace SignIn
+namespace ElabSignIn
 {
 	public partial class Register : Form
 	{

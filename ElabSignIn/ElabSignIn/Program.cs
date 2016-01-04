@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace SignIn
+namespace ElabSignIn
 {
 	static class Program
 	{

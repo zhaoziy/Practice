@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseCmd.cs" />
+    <Compile Include="Identify.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>

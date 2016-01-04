@@ -1,4 +1,4 @@
-﻿namespace SignIn
+﻿namespace ElabSignIn
 {
 	class UserInfo
 	{

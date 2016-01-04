@@ -7,7 +7,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace SignIn
+namespace ElabSignIn
 {
 	static class UserFunction
 	{

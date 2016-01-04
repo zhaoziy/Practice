@@ -1,4 +1,4 @@
-﻿namespace SignIn
+﻿namespace ElabSignIn
 {
 	partial class Register
 	{

@@ -2,7 +2,7 @@
 using System.Data.SqlClient;
 using System.Data;
 
-namespace SignIn
+namespace ElabSignIn
 {
 	class DatabaseCmd
 	{
