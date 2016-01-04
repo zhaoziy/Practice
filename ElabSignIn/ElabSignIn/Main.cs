@@ -146,7 +146,7 @@ namespace SignIn
 			}
 		}
 
-		private bool GetInfo(out UserInfo userinfo)
+		private bool GetInfo(ref UserInfo userinfo)
 		{
 			string str = string.Empty;
 			if (UserType == 1)
@@ -176,13 +176,6 @@ namespace SignIn
 			}
 			else
 			{
-				userinfo.UserName = "";
-				userinfo.StuNum = "";
-				userinfo.user = "";
-				userinfo.Team = "";
-				userinfo.Phone = "";
-				userinfo.HappyMotto = "";
-				userinfo.Grade = "";
 				return false;
 			}
 		}
@@ -290,17 +283,6 @@ namespace SignIn
 			this.ShowOrHide(!this.Visible);
 		}
 
-		private void 开机启动ToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			this.开机启动ToolStripMenuItem.Checked = !this.开机启动ToolStripMenuItem.Checked;
-			if (开机启动ToolStripMenuItem.Checked)
-			{
-			}
-			else
-			{
-			}
-		}
-
 		private void 退出程序ToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Application.Exit();
@@ -373,22 +355,11 @@ namespace SignIn
 			}
 		}
 
-		private void button_HIDE_Click(object sender, EventArgs e)
+		private void button_Hide_Click(object sender, EventArgs e)
 		{
 			ShowOrHide(false);
 		}
 
 		#endregion
-
-		struct UserInfo
-		{
-			public string UserName;
-			public string StuNum;
-			public string user;
-			public string Team;
-			public string Phone;
-			public string HappyMotto;
-			public string Grade;
-		}
 	}
 }
