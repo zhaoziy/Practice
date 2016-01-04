@@ -25,7 +25,7 @@ namespace ElabSignIn
 			
 			Initialization();
 		
-			UserSignInOrSignOut.SignIn(userinfo);
+			UserSignInOrSignOut.SignIn(ref userinfo);
 			OnlineTime = UserSignInOrSignOut.SumOnlineTime(userinfo);
 
 			UpdateInfo();
@@ -67,7 +67,7 @@ namespace ElabSignIn
 		{
 			if (e.CloseReason == CloseReason.ApplicationExitCall)
 			{
-				UserSignInOrSignOut.SignOut();
+				UserSignInOrSignOut.SignOut(userinfo);
 			}
 			else if (e.CloseReason == CloseReason.UserClosing)
 			{
@@ -85,7 +85,7 @@ namespace ElabSignIn
 			}
 			else
 			{
-				UserSignInOrSignOut.SignOut();
+				UserSignInOrSignOut.SignOut(userinfo);
 			}
 			notifyIcon1.Visible = false;
 		}

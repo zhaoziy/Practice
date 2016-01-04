@@ -9,6 +9,7 @@
 		public string Phone;
 		public string HappyMotto;
 		public string Grade;
+		public string Sign_Identity;
 
 		public UserInfo()
 		{
@@ -19,9 +20,10 @@
 			Phone = string.Empty;
 			HappyMotto = string.Empty;
 			Grade = string.Empty;
+			Sign_Identity = string.Empty;
 		}
 
-		public UserInfo( string UserName, string StuNum,	string user, string Team, string Phone, string HappyMotto, string Grade)
+		public UserInfo( string UserName, string StuNum,	string user, string Team, string Phone, string HappyMotto, string Grade, string Sign_Identity)
 		{
 			this.UserName = UserName;
 			this.StuNum = StuNum;
@@ -30,6 +32,7 @@
 			this.Phone = Phone;
 			this.HappyMotto = HappyMotto;
 			this.Grade = Grade;
+			this.Sign_Identity = Sign_Identity;
 		}
 	}
 }

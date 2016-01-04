@@ -36,7 +36,7 @@ namespace ElabSignIn
 			return OnlineTime;
 		}
 
-		public void SignIn(UserInfo userinfo)
+		public void SignIn(ref UserInfo userinfo)
 		{
 			//检测上次是否正常退出(今天范围内)，如果不是，将上次未签退的记录以0小时退掉，并将离开字段=登入字段(因为智能考核系统是以离开字段=0获取在线用户的)
 			DatabaseCmd databasecmd = new DatabaseCmd();
@@ -65,6 +65,7 @@ namespace ElabSignIn
 					object index;
 					databasecmd.SqlExecuteScalar(str1, out index);
 					Sign_Identity = index.ToString();
+					userinfo.Sign_Identity = Sign_Identity;
 					IsSignIn = true;
 				}
 				catch (Exception ex)
@@ -75,14 +76,14 @@ namespace ElabSignIn
 			}
 		}
 
-		public void SignOut()
+		public void SignOut(UserInfo userinfo)
 		{
 			if (IsSignIn)
 			{
 				SignOutTime = UserFunction.GetServerTime();
 				string str = "update 时间统计 set 离开='" + SignOutTime.ToString("T") +
 					"',合计时间='" + UserFunction.TimeDiff(SignOutTime, SignInTime) +
-					"' where ID=" + Sign_Identity;
+					"' where ID=" + userinfo.Sign_Identity;
 				DatabaseCmd database = new DatabaseCmd();
 				if (SignOutTime.Year == 1991 || !database.SqlExecuteNonQuery(str))
 				{
